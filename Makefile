@@ -3,19 +3,21 @@ INSTALLDIR := $(DESTDIR)$(PREFIX)
 
 CC	:= gcc
 
-PKGS := gtk+-3.0 lua oocairo xscrnsaver
-INCS := $(shell pkg-config --cflags $(PKGS))
-LIBS := $(shell pkg-config --libs $(PKGS)) -lpam
+PKGS := gtk+-3.0 lua5.1 oocairo xscrnsaver
+INCS := $(shell PKG_CONFIG_PATH=/home/psychon/projects/lua-oocairo pkg-config --cflags $(PKGS))
+LIBS := $(shell PKG_CONFIG_PATH=/home/psychon/projects/lua-oocairo pkg-config --libs $(PKGS)) -lpam
 
 CFLAGS   := -Wall -Wextra -std=gnu99 -I. $(INCS) $(CFLAGS)
 CPPFLAGS := -DLUALOCK_INSTALL_DIR=\"$(INSTALLDIR)/share/lualock\"  \
-			-DLUALOCK_DATA_DIR=\"$(INSTALLDIR)/share/lualock/data\" $(CPPFLAGS)
+			-DLUALOCK_DATA_DIR=\"./data\" $(CPPFLAGS)
 DEBUG    := -g -DDEBUG
 LDFLAGS  := $(LIBS) $(LDFLAGS)
 
 SRCS  := $(wildcard *.c clib/*.c)
 HEADS := $(wildcard *.h clib/*.h)
 OBJS  := $(foreach obj,$(SRCS:.c=.o),$(obj))
+
+default: debug
 
 
 all: options lualock
@@ -36,7 +38,7 @@ options:
 
 .c.o:
 	@echo $(CC) -c $< -o $@
-	@$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 lualock: $(OBJS)
 	@echo $(CC) -o $@ $(OBJS)

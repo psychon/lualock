@@ -1,3 +1,4 @@
+print("starting")
 require "odious"
 local oocairo = require "oocairo"
 
@@ -162,4 +163,3 @@ surf_timer:start()
 surface:show()
 
 update_clock()
-
