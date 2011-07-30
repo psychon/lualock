@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fontconfig/fontconfig.h>
 #include <X11/Xlib.h>
 #include <X11/extensions/scrnsaver.h>
 #include <gdk/gdk.h>
@@ -339,8 +338,6 @@ int main(int argc, char **argv) {
     
     if (prefs.no_daemon || prefs.test) {
         show_lock();
-        FcFini();
-        cairo_debug_reset_static_data();
         return 0;
     }    
     
